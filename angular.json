@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "projects": {
+    "calendar": {
+      "projectType": "library",
+      "root": "libs/calendar",
+      "sourceRoot": "libs/calendar/src",
+      "prefix": "app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/calendar"],
+          "options": {
+            "jestConfig": "libs/calendar/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/calendar/src/**/*.ts",
+              "libs/calendar/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "mocks": {
+      "root": "libs/mocks",
+      "sourceRoot": "libs/mocks/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/mocks/**/*.ts"]
+          }
+        }
+      }
+    },
+    "spa": {
+      "projectType": "application",
+      "root": "apps/spa",
+      "sourceRoot": "apps/spa/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/spa",
+            "index": "apps/spa/src/index.html",
+            "main": "apps/spa/src/main.ts",
+            "polyfills": "apps/spa/src/polyfills.ts",
+            "tsConfig": "apps/spa/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["apps/spa/src/favicon.ico", "apps/spa/src/assets"],
+            "styles": ["apps/spa/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/spa/src/environments/environment.ts",
+                  "with": "apps/spa/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "spa:build:production"
+            },
+            "development": {
+              "browserTarget": "spa:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "spa:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/spa/src/**/*.ts",
+              "apps/spa/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/spa"],
+          "options": {
+            "jestConfig": "apps/spa/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "spa-e2e": {
+      "root": "apps/spa-e2e",
+      "sourceRoot": "apps/spa-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/spa-e2e/cypress.json",
+            "tsConfig": "apps/spa-e2e/tsconfig.e2e.json",
+            "devServerTarget": "spa:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "spa:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/spa-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "spa"
+}

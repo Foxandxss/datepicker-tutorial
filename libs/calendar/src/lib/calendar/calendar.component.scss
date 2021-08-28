@@ -1,0 +1,33 @@
+.calendar {
+  background-color: white;
+}
+
+.header {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.days {
+  display: grid;
+  grid-template-rows: max-content repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 1px;
+  place-items: center;
+}
+
+.a-week-day {
+  color: red;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.a-day {
+  height: 2rem;
+}
+
+.outside {
+  color: lightgray;
+}
